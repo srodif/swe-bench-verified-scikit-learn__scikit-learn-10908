@@ -559,6 +559,21 @@ def test_feature_names():
         assert_equal(idx, cv.vocabulary_.get(name))
 
 
+def test_get_feature_names_with_vocabulary():
+    # Test that get_feature_names works when vocabulary is provided but not fitted
+    vocabulary = ['beer', 'burger', 'pizza']
+    cv = CountVectorizer(vocabulary=vocabulary)
+    
+    # Should work without fitting first
+    feature_names = cv.get_feature_names()
+    assert_array_equal(vocabulary, feature_names)
+    
+    # Should still work after transform
+    X = cv.transform(['beer burger pizza'])
+    feature_names_after = cv.get_feature_names()
+    assert_array_equal(feature_names, feature_names_after)
+
+
 def test_vectorizer_max_features():
     vec_factories = (
         CountVectorizer,
